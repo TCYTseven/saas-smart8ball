@@ -72,7 +72,7 @@ export default function Register() {
       <Head>
         <title>Register - smart8ball</title>
       </Head>
-      <main className='w-full h-screen flex flex-col items-center justify-center px-4'>
+      <main className='w-full h-screen flex flex-col items-center justify-center px-4 pt-10'>
         <div className='max-w-sm w-full text-gray-300'>
           <div className='text-center'>
             <Brand className='mx-auto w-32' />
@@ -91,23 +91,25 @@ export default function Register() {
             </div>
           </div>
           <form onSubmit={handleSignUp} className='mt-8 space-y-5'>
-            <div>
-              <label className='font-medium'>First Name</label>
-              <Input
-                type='text'
-                name='firstName'
-                required
-                className='w-full mt-2 text-gray-300 bg-gray-800 focus:bg-gray-900 focus:border-gray-800'
-              />
-            </div>
-            <div>
-              <label className='font-medium'>Last Name</label>
-              <Input
-                type='text'
-                name='lastName'
-                required
-                className='w-full mt-2 text-gray-300 bg-gray-800 focus:bg-gray-900 focus:border-gray-800'
-              />
+            <div className='flex space-x-4'>
+              <div className='w-1/2'>
+                <label className='font-medium'>First Name</label>
+                <Input
+                  type='text'
+                  name='firstName'
+                  required
+                  className='w-full mt-2 text-gray-300 bg-gray-800 focus:bg-gray-900 focus:border-gray-800'
+                />
+              </div>
+              <div className='w-1/2'>
+                <label className='font-medium'>Last Name</label>
+                <Input
+                  type='text'
+                  name='lastName'
+                  required
+                  className='w-full mt-2 text-gray-300 bg-gray-800 focus:bg-gray-900 focus:border-gray-800'
+                />
+              </div>
             </div>
             <div>
               <label className='font-medium'>Email</label>

@@ -12,12 +12,12 @@ const HowItWorks = () => {
     {
       title: "You Upload Context",
       desc: "Upload (or type in) context that will help the AI make a better decision. You can upload images, PDFs, or any other file type. Note: We do not store any of your data.",
-      image: "/images/Feature-2.svg",
+      image: "/images/featureone.svg",
     },
     {
       title: "Smart8Ball Makes A Decision",
       desc: "Our AI will return a decision providing you with guidance on what to do. You can use our AI's response to help you make the best choice.",
-      image: "/images/hero.svg",
+      image: "/images/featureone.svg",
     },
   ];
 

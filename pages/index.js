@@ -13,10 +13,10 @@ export default function Home() {
       <FAQs />
       <Features />
       <Testimonial />
-      <Pricing />
     </>
   );
 }
 //<VisualFeatures />
 //      <CTA />
+//      <Pricing />
 
