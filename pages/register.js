@@ -5,11 +5,12 @@ import Brand from "@/components/ui/Brand";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { GoogleIcon } from "@/components/Icons";
-import { supabase } from "@/supabaseclient";  // Import the supabase client
+import { supabase } from "@/supabaseclient";
 
 export default function Register() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [popupType, setPopupType] = useState('error');  // 'success' or 'error'
   const [password, setPassword] = useState('');
   const [isLengthValid, setIsLengthValid] = useState(false);
   const [includesNumber, setIncludesNumber] = useState(false);
@@ -23,12 +24,12 @@ export default function Register() {
     const confirmPassword = e.target.confirmPassword.value;
 
     if (password !== confirmPassword) {
-      showPopupMessage('Passwords do not match');
+      showPopupMessage('Passwords do not match', 'error');
       return;
     }
 
     if (!isLengthValid || !includesNumber) {
-      showPopupMessage('Password must be at least 6 characters long and include a number');
+      showPopupMessage('Password must be at least 6 characters long and include a number', 'error');
       return;
     }
 
@@ -37,9 +38,10 @@ export default function Register() {
     });
 
     if (error) {
-      showPopupMessage('Error signing up: ' + error.message);
+      showPopupMessage('Error signing up: ' + error.message, 'error');
     } else {
-      // Redirect or show success message
+      showPopupMessage('Success! Account created.', 'success');
+      // Optionally redirect the user or clear form fields here
     }
   };
 
@@ -47,14 +49,16 @@ export default function Register() {
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
 
     if (error) {
-      showPopupMessage('Error logging in: ' + error.message);
+      showPopupMessage('Error logging in: ' + error.message, 'error');
     } else {
-      // Redirect or show success message
+      showPopupMessage('Successfully logged in with Google.', 'success');
+      // Optionally redirect the user here
     }
   };
 
-  const showPopupMessage = (message) => {
-    setErrorMessage(message);
+  const showPopupMessage = (message, type) => {
+    setMessage(message);
+    setPopupType(type);
     setShowPopup(true);
     setTimeout(() => {
       setShowPopup(false);
@@ -163,8 +167,8 @@ export default function Register() {
           </form>
         </div>
         {showPopup && (
-          <div className='fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded'>
-            {errorMessage}
+          <div className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 ${popupType === 'success' ? 'bg-green-500' : 'bg-red-600'} text-white px-4 py-2 rounded`}>
+            {message}
           </div>
         )}
       </main>
