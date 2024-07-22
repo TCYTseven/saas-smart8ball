@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import LayoutEffect from "@/components/LayoutEffect";
 import SectionWrapper from "@/components/SectionWrapper";
+import Brand from "../Brand"; // Importing Brand for additional styling
 
 const TryIt = () => {
     const [fileName, setFileName] = useState('');
     const [showPopup, setShowPopup] = useState(false);
+    const [showAccountPopup, setShowAccountPopup] = useState(false); // New state for account creation popup
 
     const handleFileUpload = (event) => {
         if (event.target.files.length > 0) {
@@ -14,14 +16,24 @@ const TryIt = () => {
     };
 
     useEffect(() => {
-        if (showPopup) {
-            const timer = setTimeout(() => {
-                setShowPopup(false);
-            }, 3000); // Hide popup after 3 seconds
-
-            return () => clearTimeout(timer);
+        if (showPopup || showAccountPopup) {
+            document.body.style.overflow = 'hidden'; // Disable scrolling
+        } else {
+            document.body.style.overflow = 'unset'; // Enable scrolling
         }
-    }, [showPopup]);
+
+        return () => {
+            document.body.style.overflow = 'unset'; // Re-enable scrolling when component unmounts
+        };
+    }, [showPopup, showAccountPopup]);
+
+    const handleGetAnswer = () => {
+        setShowAccountPopup(true); // Show the account creation popup when button is pressed
+    };
+
+    const handleClosePopup = () => {
+        setShowAccountPopup(false); // Close the account creation popup
+    };
 
     return (
         <SectionWrapper id="faqs">
@@ -50,29 +62,32 @@ const TryIt = () => {
                         </label>
                     </div>
                     <div className="flex justify-center mt-6">
-                        <button className="focus:outline-none bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <button
+                            className="focus:outline-none bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-110 transition-transform duration-300"
+                            onClick={handleGetAnswer}
+                        >
                             Get Answer
                         </button>
                     </div>
                 </div>
             </div>
-            {showPopup && (
-                <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded-lg flex items-center shadow-lg">
-                    <svg
-                        className="w-6 h-6 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 13l4 4L19 7"
-                        ></path>
-                    </svg>
-                    {fileName}
+            {showAccountPopup && (
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-gray-800 text-white py-4 px-6 rounded-lg shadow-lg text-center">
+                        <Brand />
+                        <p className="mt-4">Please create an account to get your answer.</p>
+                        <div className="mt-4">
+                            <button className="bg-green-600 py-2 px-4 rounded mr-2" onClick={() => window.location.href = '/signup'}>
+                                Sign Up
+                            </button>
+                            <button className="bg-purple-600 py-2 px-4 rounded" onClick={() => window.location.href = '/register'}>
+                                Register
+                            </button>
+                        </div>
+                        <button className="mt-4 bg-red-500 py-2 px-4 rounded text-white" onClick={handleClosePopup}>
+                            Close
+                        </button>
+                    </div>
                 </div>
             )}
         </SectionWrapper>
