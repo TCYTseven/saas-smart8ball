@@ -14,48 +14,49 @@ const Testimonial = () => {
     const testimonials = [
         {
             avatar: user1,
-            name: "Mark Zuckerberg",
-            title: "Founder of meta",
-            quote: "we've been using Mailgo for almost a year now and have nothing but great things to say. It's super easy to set up campaigns and its reporting features are incredibly detailed."
+            name: "Lebron James",
+            title: "Basketball Legend",
+            quote: "I used to rely on my instincts on the court, but for everything else, it's Smart 8 Ball all the way. It's like having my own personal coach that never misses a shot."
         },
         {
             avatar: user2,
-            name: "Guillermo Rauch",
-            title: "Founder of Vercel",
-            quote: "Mailgo has been a great addition to our email marketing strategy. It's so user-friendly, yet powerful and effective. I'm able to quickly create beautiful emails."
+            name: "Tony Stark",
+            title: "Genius, Billionaire, Playboy, Philanthropist",
+            quote: "Even with JARVIS, I still consult Smart 8 Ball for those tricky decisions. It's like having an AI sidekick with a sense of humor."
         },
         {
             avatar: user3,
-            name: "Sidi jeddou",
-            title: "Founder of Float UI",
-            quote: "I highly recommend Mailgo for anyone looking for an easy-to-use and reliable email marketing tool! It's simple to use and has been a great help."
+            name: "Hermione Granger",
+            title: "Brightest Witch of Her Age",
+            quote: "Why cast a spell when Smart 8 Ball can make the decision for you? It's magical, but without the wand-waving."
         },
         {
             avatar: user4,
-            name: "Ghazbel",
-            title: "Founder of forceY",
-            quote: "I've been using Mailgo for the past few months and I'm extremely impressed. The user interface is very intuitive, and I love the automated features ."
+            name: "Yoda",
+            title: "Jedi Master",
+            quote: "Decide you must, but use Smart 8 Ball you should. The Force is strong with this one."
         },
         {
             avatar: user5,
-            name: "Ana khan",
-            title: "Founder of larax",
-            quote: "Mailgo is the best email marketing tool I've ever used. It's incredibly simple and intuitive to use, yet it offers a wide range of features and options."
+            name: "Sherlock Holmes",
+            title: "Consulting Detective",
+            quote: "Elementary, my dear Watson. When in doubt, I turn to Smart 8 Ball. It’s more reliable than guessing."
         },
         {
             avatar: user6,
-            name: "Ahmed khasem",
-            title: "Founder of Let’s code",
-            quote: "Mailgo is definitely the way to go when it comes to email marketing + I highly recommend it as an email marketing tool with AI support."
-        },
-    ]
+            name: "Payal Aggarwal",
+            title: "GOAT",
+            quote: "smart8ball helps me choose the best punishments when my son misbehaves!"
+        }
+    ];
+    
 
     return (
         <SectionWrapper>
             <div id="testimonials" className="custom-screen text-gray-300">
                 <div className="max-w-2xl text-center md:mx-auto">
                     <h2 className="text-gray-50 text-3xl font-semibold sm:text-4xl">
-                        Mailgo is loved by the best founders around the world
+                        smart8ball is loved by the coolest people around the world
                     </h2>
                 </div>
                 <GradientWrapper wrapperClassName="max-w-sm h-40 top-12 inset-x-0" className="mt-12">
