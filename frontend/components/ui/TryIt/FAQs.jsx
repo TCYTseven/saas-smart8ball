@@ -87,9 +87,9 @@ const TryIt = () => {
                             <div className="mt-6 flex justify-center space-x-4">
                                 <button
                                     className="bg-green-600 hover:bg-green-700 py-2 px-4 rounded transition-colors duration-300"
-                                    onClick={() => window.location.href = '/signup'}
+                                    onClick={() => window.location.href = '/login'}
                                 >
-                                    Sign Up
+                                    Log In
                                 </button>
                                 <button
                                     className="bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded transition-colors duration-300"

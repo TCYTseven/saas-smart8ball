@@ -6,46 +6,45 @@ const Pricing = () => {
 
     const plans = [
         {
-            name: "Basic plan",
-            desc: "For new creators building their list",
+            name: "Free",
+            desc: "test out smart8ball for yourself",
             price: 0,
             isMostPop: false,
             features: [
-                "300 emails/day",
-                "Customizable Email Templates",
-                "Drag & Drop Editor",
-                "Transactional Emails",
-                "SMS & WhatsApp Campaigns",
-                "Phone support",
-
+                "5 requests/day",
+                "Upload 1 attachment per request",
+                "Upload PDFs,Images,Spreadsheets",
+                "Load distinct 'profiles' to talk to",
             ],
         },
         {
-            name: "Starter",
-            desc: "Ideal for growing businesses",
+            name: "Supporter",
+            desc: "Ideal for people who plan to use smart8ball",
             price: 12,
             isMostPop: true,
             features: [
-                "From 20k emails/month",
-                "Marketing Automation",
-                "A/B testing",
-                "Advanced statistics",
-                "Multi-user access",
-                "Send time optimization",
+                "15 requests/day",
+                "Upload up to 10 attachments per request",
+                "Upload PDFs,Images,Spreadsheets",
+                "Load distinct 'profiles' to talk to",
+                "Conversations are stored",
+                "Priority customer support",
             ],
         },
         {
-            name: "Business",
-            desc: "Built for marketing managers",
+            name: "Sponsor",
+            desc: "Built for the VIP's",
             price: 32,
             isMostPop: false,
             features: [
-                "Everything in Starter",
-                "Enterprise-grade Security",
-                "Advanced Integrations",
-                "Sub-account Management",
-                "Tailored Onboarding",
-                "Personalized support",
+                "Unlimited requests/day",
+                "Upload up to 10 attachments per request",
+                "Upload PDFs,Images,Spreadsheets",
+                "Load distinct 'profiles' to talk to",
+                "Conversations are stored",
+                "Export conversation summaries",
+                "Get Access to Beta Features",
+                "Priority customer support",
             ],
         },
     ];
@@ -56,7 +55,7 @@ const Pricing = () => {
         <SectionWrapper id="pricing" className='custom-screen'>
             <div className='relative max-w-xl mx-auto text-center'>
                 <h2 className='text-gray-50 text-3xl font-semibold sm:text-4xl'>
-                    Find a plan to power your business
+                    Find a plan to power your future
                 </h2>
             </div>
             <LayoutEffect
