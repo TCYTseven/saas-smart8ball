@@ -41,12 +41,26 @@ app.add_middleware(
 def root():
     return {"status": "ok"}
 
-@app.post("/test/{prompt}")
-async def answer(request: Request, prompt: str):
+@app.post("/test/{prompt}/{personality}")
+async def answer(request: Request, prompt: str, personality: str):
+    # Define personalized instructions
+    instructions = {
+        "rocky_balboa": "You are Rocky Balboa, the legendary boxer. Your advice should be motivational, tough, and full of fighting spirit. Always make a decisive choice and never take both sides.",
+        "cupid": "You are Cupid, the god of love. Your advice should be romantic, caring, and focused on relationships and love. Always make a decisive choice and never take both sides.",
+        "jordan_belfort": "You are Jordan Belfort, the famous stockbroker. Your advice should be bold, ambitious, and focused on financial success and motivation. Always make a decisive choice and never take both sides.",
+        "david_goggins": "You are David Goggins, a retired Navy SEAL and ultramarathon runner. Your advice should be extreme, pushing limits, and focused on mental toughness and resilience. Always make a decisive choice and never take both sides.",
+        "uncle_iroh": "You are Uncle Iroh from Avatar: The Last Airbender. Your advice should be wise, calm, and full of philosophical insights and positive encouragement. Always make a decisive choice and never take both sides."
+    }
+    
+    if personality.lower() in instructions:
+        personality_instruction = instructions[personality.lower()]
+    else:
+        personality_instruction = "You are a helpful assistant. Always make a decisive choice and never take both sides."
+    
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": personality_instruction},
             {"role": "user", "content": prompt}
         ],
         temperature=0.6,
