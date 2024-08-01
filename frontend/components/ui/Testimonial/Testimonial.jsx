@@ -1,16 +1,16 @@
-import SectionWrapper from "@/components/SectionWrapper"
-import GradientWrapper from "@/components/GradientWrapper"
-import user1 from "@/public/testimonial/user1.webp"
-import user2 from "@/public/testimonial/user2.webp"
-import user3 from "@/public/testimonial/user3.webp"
-import user4 from "@/public/testimonial/user4.webp"
-import user5 from "@/public/testimonial/user5.webp"
-import user6 from "@/public/testimonial/user6.webp"
-import Image from "next/image"
-import LayoutEffect from "@/components/LayoutEffect"
+import SectionWrapper from "@/components/SectionWrapper";
+import GradientWrapper from "@/components/GradientWrapper";
+import user1 from "@/public/testimonial/user1.webp";
+import user2 from "@/public/testimonial/user2.webp";
+import user3 from "@/public/testimonial/user3.webp";
+import user4 from "@/public/testimonial/user4.webp";
+import user5 from "@/public/testimonial/user5.webp";
+import user6 from "@/public/testimonial/user6.webp";
+import Image from "next/image";
+import LayoutEffect from "@/components/LayoutEffect";
+import { motion } from "framer-motion";
 
 const Testimonial = () => {
-
     const testimonials = [
         {
             avatar: user1,
@@ -49,16 +49,28 @@ const Testimonial = () => {
             quote: "smart8ball helps me choose the best punishments when my son misbehaves!"
         }
     ];
-    
 
     return (
         <SectionWrapper>
             <div id="testimonials" className="custom-screen text-gray-300">
-                <div className="max-w-2xl text-center md:mx-auto">
-                    <h2 className="text-gray-50 text-3xl font-semibold sm:text-4xl">
-                        smart8ball is loved by the coolest people around the world
-                    </h2>
-                </div>
+                <LayoutEffect
+                    className="duration-1000 delay-300"
+                    isInviewState={{
+                        trueState: "opacity-1",
+                        falseState: "opacity-0 translate-y-6"
+                    }}
+                >
+                    <motion.div
+                        className="max-w-3xl mx-auto text-center p-8 bg-gradient-to-r from-[#6d28d9] via-[#8b5cf6] to-[#9d4edd] rounded-lg shadow-xl"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                    >
+                        <h1 className="text-6xl font-extrabold text-white drop-shadow-lg">
+                            Vouches
+                        </h1>
+                    </motion.div>
+                </LayoutEffect>
                 <GradientWrapper wrapperClassName="max-w-sm h-40 top-12 inset-x-0" className="mt-12">
                     <LayoutEffect
                         className="duration-1000 delay-300"
@@ -68,40 +80,38 @@ const Testimonial = () => {
                         }}
                     >
                         <ul className="grid gap-6 duration-1000 delay-300 ease-in-out sm:grid-cols-2 lg:grid-cols-3">
-                            {
-                                testimonials.map((item, idx) => (
-                                    <li key={idx} className="p-4 rounded-xl border border-gray-800"
-                                        style={{
-                                            backgroundImage: "radial-gradient(100% 100% at 50% 50%, rgba(124, 58, 237, 0.05) 0%, rgba(124, 58, 237, 0) 100%)"
-                                        }}
-                                    >
-                                        <figure className="flex flex-col justify-between gap-y-6 h-full">
-                                            <blockquote className="">
-                                                <p className="">
-                                                    {item.quote}
-                                                </p>
-                                            </blockquote>
-                                            <div className="flex items-center gap-x-4">
-                                                <Image
-                                                    src={item.avatar}
-                                                    alt={item.name}
-                                                    className="w-14 h-14 rounded-full object-cover"
-                                                />
-                                                <div>
-                                                    <span className="block text-gray-50 font-semibold">{item.name}</span>
-                                                    <span className="block text-sm mt-0.5">{item.title}</span>
-                                                </div>
+                            {testimonials.map((item, idx) => (
+                                <li key={idx} className="p-4 rounded-xl border border-gray-800"
+                                    style={{
+                                        backgroundImage: "radial-gradient(100% 100% at 50% 50%, rgba(124, 58, 237, 0.1) 0%, rgba(124, 58, 237, 0) 100%)"
+                                    }}
+                                >
+                                    <figure className="flex flex-col justify-between gap-y-6 h-full">
+                                        <blockquote className="">
+                                            <p className="text-gray-50">
+                                                {item.quote}
+                                            </p>
+                                        </blockquote>
+                                        <div className="flex items-center gap-x-4">
+                                            <Image
+                                                src={item.avatar}
+                                                alt={item.name}
+                                                className="w-14 h-14 rounded-full object-cover"
+                                            />
+                                            <div>
+                                                <span className="block text-gray-50 font-semibold">{item.name}</span>
+                                                <span className="block text-sm mt-0.5">{item.title}</span>
                                             </div>
-                                        </figure>
-                                    </li>
-                                ))
-                            }
+                                        </div>
+                                    </figure>
+                                </li>
+                            ))}
                         </ul>
                     </LayoutEffect>
                 </GradientWrapper>
             </div>
         </SectionWrapper>
-    )
-}
+    );
+};
 
-export default Testimonial
+export default Testimonial;

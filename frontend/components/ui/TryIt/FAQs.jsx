@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import LayoutEffect from "@/components/LayoutEffect";
 import SectionWrapper from "@/components/SectionWrapper";
-import { motion, AnimatePresence } from 'framer-motion';
 import Brand from "../Brand"; // Importing Brand for additional styling
 
 const TryIt = () => {
@@ -13,11 +12,14 @@ const TryIt = () => {
         if (event.target.files.length > 0) {
             setFileName(`File "${event.target.files[0].name}" uploaded successfully.`);
             setShowPopup(true);
+            setTimeout(() => {
+                setShowPopup(false);
+            }, 3000); // Hide popup after 3 seconds
         }
     };
 
     useEffect(() => {
-        if (showPopup || showAccountPopup) {
+        if (showAccountPopup) {
             document.body.style.overflow = 'hidden'; // Disable scrolling
         } else {
             document.body.style.overflow = 'unset'; // Enable scrolling
@@ -26,7 +28,7 @@ const TryIt = () => {
         return () => {
             document.body.style.overflow = 'unset'; // Re-enable scrolling when component unmounts
         };
-    }, [showPopup, showAccountPopup]);
+    }, [showAccountPopup]);
 
     const handleGetAnswer = () => {
         setShowAccountPopup(true); // Show the account creation popup when button is pressed
@@ -72,42 +74,39 @@ const TryIt = () => {
                     </div>
                 </div>
             </div>
-            <AnimatePresence>
-                {showAccountPopup && (
-                    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            transition={{ duration: 0.3 }}
-                            className="bg-gray-800 text-white py-4 px-6 rounded-lg shadow-lg text-center"
-                        >
-                            <Brand />
-                            <p className="mt-4 text-lg">Please create an account to get your answer.</p>
-                            <div className="mt-6 flex justify-center space-x-4">
-                                <button
-                                    className="bg-green-600 hover:bg-green-700 py-2 px-4 rounded transition-colors duration-300"
-                                    onClick={() => window.location.href = '/login'}
-                                >
-                                    Log In
-                                </button>
-                                <button
-                                    className="bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded transition-colors duration-300"
-                                    onClick={() => window.location.href = '/register'}
-                                >
-                                    Register
-                                </button>
-                            </div>
+            {showPopup && (
+                <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg max-w-xs w-full text-center">
+                    {fileName}
+                </div>
+            )}
+            {showAccountPopup && (
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-gray-800 text-white py-4 px-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+                        <Brand />
+                        <p className="mt-4 text-lg">Please create an account to get your answer.</p>
+                        <div className="mt-6 flex justify-center space-x-4">
                             <button
-                                className="mt-6 bg-red-500 hover:bg-red-600 py-2 px-4 rounded text-white transition-colors duration-300"
-                                onClick={handleClosePopup}
+                                className="bg-green-600 hover:bg-green-700 py-2 px-4 rounded transition-colors duration-300"
+                                onClick={() => window.location.href = '/login'}
                             >
-                                Close
+                                Log In
                             </button>
-                        </motion.div>
+                            <button
+                                className="bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded transition-colors duration-300"
+                                onClick={() => window.location.href = '/register'}
+                            >
+                                Register
+                            </button>
+                        </div>
+                        <button
+                            className="mt-6 bg-red-500 hover:bg-red-600 py-2 px-4 rounded text-white transition-colors duration-300"
+                            onClick={handleClosePopup}
+                        >
+                            Close
+                        </button>
                     </div>
-                )}
-            </AnimatePresence>
+                </div>
+            )}
         </SectionWrapper>
     );
 };
