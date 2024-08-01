@@ -60,7 +60,7 @@ const HowItWorks = () => {
               {stepsList.map((item, idx) => (
                 <div key={idx} className="flex flex-col items-center">
                   <motion.div
-                    className="space-y-3 p-4 sm:p-6 rounded-xl border border-gray-800 w-full sm:w-80 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    className="space-y-3 p-4 sm:p-6 rounded-xl border border-gray-800 w-full sm:w-[400px] shadow-lg hover:shadow-xl transition-shadow duration-300"
                     style={{
                       background: "radial-gradient(157.73% 157.73% at 50% -29.9%, rgba(203, 213, 225, 0.16) 0%, rgba(203, 213, 225, 0) 100%)",
                       boxShadow: "0 0 15px rgba(0, 0, 0, 0.8)", // Black glow
@@ -91,7 +91,6 @@ const HowItWorks = () => {
                   className="absolute top-0 left-0 w-full h-full"
                   src="https://www.youtube.com/embed/zx1Pz9am6ZQ?si=tXRBZK_16oiFg-ze"
                   title="YouTube video player"
-                  frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen

@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import LayoutEffect from "@/components/LayoutEffect";
 import SectionWrapper from "@/components/SectionWrapper";
-import Brand from "../Brand"; // Importing Brand for additional styling
+import Brand from "../Brand"; 
+import { FaInfoCircle } from 'react-icons/fa'; // Import the info icon
 
 const TryIt = () => {
     const [fileName, setFileName] = useState('');
     const [showPopup, setShowPopup] = useState(false);
-    const [showAccountPopup, setShowAccountPopup] = useState(false); // New state for account creation popup
+    const [showAccountPopup, setShowAccountPopup] = useState(false);
+    const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
+    const [selectedPersona, setSelectedPersona] = useState('ITMP'); // Default personality
 
     const handleFileUpload = (event) => {
         if (event.target.files.length > 0) {
@@ -14,28 +17,36 @@ const TryIt = () => {
             setShowPopup(true);
             setTimeout(() => {
                 setShowPopup(false);
-            }, 3000); // Hide popup after 3 seconds
+            }, 3000); 
         }
     };
 
     useEffect(() => {
         if (showAccountPopup) {
-            document.body.style.overflow = 'hidden'; // Disable scrolling
+            document.body.style.overflow = 'hidden'; 
         } else {
-            document.body.style.overflow = 'unset'; // Enable scrolling
+            document.body.style.overflow = 'unset'; 
         }
 
         return () => {
-            document.body.style.overflow = 'unset'; // Re-enable scrolling when component unmounts
+            document.body.style.overflow = 'unset'; 
         };
     }, [showAccountPopup]);
 
     const handleGetAnswer = () => {
-        setShowAccountPopup(true); // Show the account creation popup when button is pressed
+        setShowAccountPopup(true); 
     };
 
     const handleClosePopup = () => {
-        setShowAccountPopup(false); // Close the account creation popup
+        setShowAccountPopup(false); 
+    };
+
+    const toggleAdvancedSettings = () => {
+        setShowAdvancedSettings(prev => !prev);
+    };
+
+    const handlePersonaChange = (event) => {
+        setSelectedPersona(event.target.value);
     };
 
     return (
@@ -55,14 +66,56 @@ const TryIt = () => {
                             className="w-full h-80 p-4 border border-gray-700 bg-gray-800 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                             placeholder="Ask anything..."
                         />
-                        <label className="absolute bottom-4 left-4 bg-gray-700 text-gray-300 font-bold py-2 px-3 rounded-lg cursor-pointer text-sm">
-                            Attach Context
-                            <input
-                                type="file"
-                                className="hidden"
-                                onChange={handleFileUpload}
-                            />
-                        </label>
+                        <div className="absolute bottom-4 left-4 flex space-x-4">
+                            <label className="bg-gray-700 text-gray-300 font-bold py-2 px-3 rounded-lg cursor-pointer text-sm">
+                                Attach Context
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    onChange={handleFileUpload}
+                                />
+                            </label>
+                            <button
+                                className="bg-gray-700 text-gray-300 font-bold py-2 px-3 rounded-lg cursor-pointer text-sm"
+                                onClick={toggleAdvancedSettings}
+                            >
+                                Advanced Settings
+                            </button>
+                        </div>
+                        {showAdvancedSettings && (
+                            <div className="absolute top-0 right-0 bottom-0 bg-gray-700 text-gray-300 w-1/3 h-full p-4">
+                                <button
+                                    className="text-gray-400 hover:text-gray-300 absolute top-4 right-4 text-xl"
+                                    onClick={toggleAdvancedSettings}
+                                >
+                                    &times;
+                                </button>
+                                <h3 className="text-lg font-bold mb-4">Select Persona</h3>
+                                <select
+                                    className="w-full p-2 bg-gray-700 border border-gray-600 rounded mb-4"
+                                    value={selectedPersona}
+                                    onChange={handlePersonaChange}
+                                >
+                                    <option value="">-- Select Persona --</option>
+                                    <option value="Uncle Iroh">Uncle Iroh</option>
+                                    <option value="Rocky Balboa">Rocky Balboa</option>
+                                    <option value="Cupid">Cupid</option>
+                                    <option value="David Goggins">David Goggins</option>
+                                    <option value="Jordan Belfort">Jordan Belfort</option>
+                                </select>
+                                <div className="mt-4">
+                                    <button className="text-gray-300 font-bold text-sm">
+                                        Responding to: ITMS
+                                    </button>
+                                    <div className="mt-2 text-sm flex items-center space-x-2">
+                                        <FaInfoCircle className="text-gray-400" />
+                                        <a href="/pricing" className="text-blue-400 hover:underline">
+                                            Activate Personalization
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div className="flex justify-center mt-6">
                         <button

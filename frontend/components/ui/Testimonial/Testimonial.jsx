@@ -69,8 +69,12 @@ const Testimonial = () => {
                         <h1 className="text-6xl font-extrabold text-white drop-shadow-lg">
                             Vouches
                         </h1>
+
                     </motion.div>
                 </LayoutEffect>
+                <h2 className="text-center text-2xl font-normal mt-8">
+                    We are proudly serving <b>5+</b> users!
+                </h2>
                 <GradientWrapper wrapperClassName="max-w-sm h-40 top-12 inset-x-0" className="mt-12">
                     <LayoutEffect
                         className="duration-1000 delay-300"
