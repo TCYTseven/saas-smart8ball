@@ -33,15 +33,22 @@ export default function Register() {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({ email, password }, {
-      data: { firstName, lastName }
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { firstName, lastName }
+      }
     });
 
     if (error) {
       showPopupMessage('Error signing up: ' + error.message, 'error');
     } else {
-      showPopupMessage('Success! Account created.', 'success');
-      // Optionally redirect the user or clear form fields here
+      if (data && data.user) {
+        await createUserRecord(data.user.id, firstName, lastName);
+        showPopupMessage('Success! Account created.', 'success');
+        // Optionally redirect the user or clear form fields here
+      }
     }
   };
 
@@ -53,6 +60,18 @@ export default function Register() {
     } else {
       showPopupMessage('Successfully logged in with Google.', 'success');
       // Optionally redirect the user here
+    }
+  };
+
+  const createUserRecord = async (userId, firstName, lastName) => {
+    const { error } = await supabase
+      .from('main')
+      .insert([{ id: userId, firstName, lastName, personality: '' }]);
+
+    if (error) {
+      console.error('Error creating user record:', error);
+    } else {
+      console.log('User record created successfully');
     }
   };
 
