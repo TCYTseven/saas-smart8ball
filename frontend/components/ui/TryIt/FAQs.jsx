@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import LayoutEffect from "@/components/LayoutEffect";
 import SectionWrapper from "@/components/SectionWrapper";
-import Brand from "../Brand"; 
+import Brand from "../Brand";
+import { supabase } from '@/supabaseclient';
 import { FaInfoCircle } from 'react-icons/fa'; // Import the info icon
 
 const TryIt = () => {
@@ -10,6 +11,7 @@ const TryIt = () => {
     const [showAccountPopup, setShowAccountPopup] = useState(false);
     const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
     const [selectedPersona, setSelectedPersona] = useState('ITMP'); // Default personality
+    const [personaFromSupabase, setPersonaFromSupabase] = useState('');
 
     const handleFileUpload = (event) => {
         if (event.target.files.length > 0) {
@@ -32,6 +34,23 @@ const TryIt = () => {
             document.body.style.overflow = 'unset'; 
         };
     }, [showAccountPopup]);
+
+    useEffect(() => {
+        const fetchPersona = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('personality')
+                .eq('id', user?.id)
+                .single();
+            if (error) {
+                console.error('Error fetching persona from Supabase:', error);
+            } else {
+                setPersonaFromSupabase(data?.personality || 'ITMP'); // Default to 'ITMP' if no persona is set
+            }
+        };
+        fetchPersona();
+    }, []);
 
     const handleGetAnswer = () => {
         setShowAccountPopup(true); 
@@ -105,11 +124,11 @@ const TryIt = () => {
                                 </select>
                                 <div className="mt-4">
                                     <button className="text-gray-300 font-bold text-sm">
-                                        Responding to: ITMS
+                                        Responding to: {personaFromSupabase}
                                     </button>
                                     <div className="mt-2 text-sm flex items-center space-x-2">
                                         <FaInfoCircle className="text-gray-400" />
-                                        <a href="/pricing" className="text-blue-400 hover:underline">
+                                        <a href="/account" className="text-blue-400 hover:underline">
                                             Activate Personalization
                                         </a>
                                     </div>

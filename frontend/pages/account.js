@@ -1,45 +1,71 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { supabase } from '@/supabaseclient'; // Import the supabase client
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid'; // Import Heroicons for navigation
-import { useRouter } from 'next/router'; // Import useRouter for redirection
+import { supabase } from '@/supabaseclient';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/router';
 
 const questions = [
   {
     id: 1,
-    text: "Keeping in mind that everyone is unique, would you say that you’re mostly a normal person or would you say you’re mostly not?",
-    options: ["Normal", "Not normal"]
+    text: "Would you say that you are a unique person?",
+    options: ["Yes, I am unique", "No, I am more like others"]
   },
   {
     id: 2,
-    text: "Which of these approaches do you use most often?:",
+    text: "Which approach do you use most often when tackling tasks?",
     options: [
-      "Quickly making a decision and spending your time steadily working toward your objective. (EJs)",
-      "Carefully planning a decision and helping someone else with the execution of it. (IJs)",
-      "Gathering information/thinking things through until the last minute, where you make a creative burst using all the information you’ve gathered. (IPs)",
-      "Throwing yourself into the mix quickly, trusting your instincts, sense of exploration, and learning as you go. (EPs)"
+      "Decide quickly and work steadily towards your goal",
+      "Carefully plan and help others with execution",
+      "Gather information, then make a last-minute creative burst",
+      "Jump in, trust your instincts, and learn as you go"
     ]
   },
   {
     id: 3,
-    text: "Depends on if they’re a perceiver or judger: In group situations, do you more often take on the role of caring for people and making sure they get along? Or do you more often take on the role of making sure things get done even if you have to be a little direct? (F and T respectively)",
+    text: "In group situations, do you usually:",
     options: [
-      "Caring for people and making sure they get along. (F)",
-      "Making sure things get done even if you have to be a little direct. (T)"
+      "Care for people and ensure everyone gets along",
+      "Make sure things get done, even if you have to be direct"
     ]
   },
   {
     id: 4,
-    text: "When trying to persuade someone to change their opinion, do you more often use arguments that look like:",
+    text: "When trying to change someone's opinion, do you:",
     options: [
-      "I know you believe so-and-so, but it’s not supported by facts or evidence. Here are some statistical facts and logical arguments to support this point. It may not feel good, but the truth is simply x. (Thinker)",
-      "I know you believe so-and-so, but people are suffering! I know a woman named Susan…(insert Susan’s personal story here). There are people like Susan everywhere, so you should support helping them. (Feeler)"
+      "Use facts and logical arguments to persuade them",
+      "Use personal stories and emotional appeals to persuade them"
     ]
   }
 ];
 
+const allPersonalityTypes = [
+  "ISTJ", "ISFJ", "ESTJ", "ESFJ",
+  "ISTP", "ISFP", "ESTP", "ESFP",
+  "INTJ", "INFP", "ENTJ", "ENFP",
+  "INFJ", "ENFJ", "INTP", "ENTP"
+];
+
+const descriptions = {
+  "ISTJ": "ISTJs are known for their practicality and reliability. They value tradition and order and prefer to work with clear guidelines and structures.",
+  "ISFJ": "ISFJs are warm and compassionate. They are dedicated to helping others and are known for their attention to detail and loyalty.",
+  "ESTJ": "ESTJs are assertive and efficient. They are natural leaders who value organization and are committed to maintaining order and productivity.",
+  "ESFJ": "ESFJs are sociable and caring. They are focused on harmony and the needs of others, often taking on roles that involve nurturing and supporting those around them.",
+  "ISTP": "ISTPs are independent and resourceful. They are practical problem-solvers who enjoy working with their hands and analyzing situations to find effective solutions.",
+  "ISFP": "ISFPs are sensitive and artistic. They value personal expression and are often drawn to creative pursuits, enjoying the freedom to explore their own ideas.",
+  "ESTP": "ESTPs are energetic and adventurous. They thrive on action and are known for their ability to adapt quickly to changing circumstances.",
+  "ESFP": "ESFPs are lively and spontaneous. They enjoy living in the moment and are often the life of the party, bringing enthusiasm and a sense of fun to their interactions.",
+  "INTJ": "INTJs are strategic and visionary. They are focused on long-term goals and are known for their ability to develop innovative solutions to complex problems.",
+  "INFP": "INFPs are idealistic and empathetic. They are guided by their values and seek to make a positive impact on the world through their creativity and compassion.",
+  "ENTJ": "ENTJs are decisive and confident. They are natural leaders who excel in organizing and directing efforts toward achieving ambitious objectives.",
+  "ENFP": "ENFPs are enthusiastic and imaginative. They are driven by their ideals and are skilled at inspiring others with their passion and creativity.",
+  "INFJ": "INFJs are insightful and caring. They are deeply focused on understanding and helping others, often using their intuition to guide their actions and decisions.",
+  "ENFJ": "ENFJs are charismatic and supportive. They are driven by a desire to help others reach their potential and are often seen as empathetic and influential leaders.",
+  "INTP": "INTPs are analytical and objective. They enjoy exploring abstract ideas and theories, seeking to understand the underlying principles of how things work.",
+  "ENTP": "ENTPs are innovative and energetic. They are known for their quick thinking and ability to generate creative solutions to challenges and problems."
+};
+
 export default function Account() {
-  const router = useRouter(); // Initialize useRouter here
+  const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [selectedTab, setSelectedTab] = useState('');
@@ -88,7 +114,7 @@ export default function Account() {
         setShowPopup(false);
       }, 3000);
     } else {
-      router.push('/'); // Redirect to the home page
+      router.push('/');
     }
   };
 
@@ -108,19 +134,6 @@ export default function Account() {
     setAnswers({ ...answers, [questionId]: answer });
   };
 
-  const typeMapping = {
-    "Normal": "S",
-    "Not normal": "N",
-    "EJs": "J",
-    "IJs": "J",
-    "IPs": "P",
-    "EPs": "P",
-    "F": "F",
-    "T": "T",
-    "Thinker": "T",
-    "Feeler": "F"
-  };
-  
   const determineType = (typeCode) => {
     const typeMap = {
       "ISTJ": ["S", "J", "T"],
@@ -140,54 +153,44 @@ export default function Account() {
       "INTP": ["N", "P", "T"],
       "ENTP": ["N", "P", "T"]
     };
-  
+
     return Object.keys(typeMap).find(type => 
       typeMap[type].every((code, i) => code === typeCode[i])
     );
   };
-  
+
+  const getRandomPersonality = () => {
+    const randomIndex = Math.floor(Math.random() * allPersonalityTypes.length);
+    return allPersonalityTypes[randomIndex];
+  };
+
   const calculatePersonalityType = () => {
     // Ensure all questions have been answered
-    const allAnswered = questions.every(question => answers[question.id]);
-    
-    if (!allAnswered) {
-      alert('Please answer all questions before submitting.');
-      return;
-    }
-    
+    const allAnswered = questions.every(q => answers[q.id]);
+    if (!allAnswered) return;
+
+    // Example logic to determine type based on answers
     let typeCode = '';
-  
-    // Determine type code based on answers
-    if (answers[1]) typeCode += typeMapping[answers[1]] || '';
-    if (answers[2]) typeCode += typeMapping[answers[2]] || '';
-    if (answers[3]) typeCode += typeMapping[answers[3]] || '';
-    if (answers[4]) typeCode += typeMapping[answers[4]] || '';
-  
-    const type = determineType(typeCode);
-  
-    setPersonalityType(type || 'none');
-    updatePersonalityInSupabase(type || 'none');
-  };
-  
-  const updatePersonalityInSupabase = async (type) => {
-    if (!user) return;
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .update({ personality: type })
-      .eq('id', user.id);
-    if (error) {
-      console.error('Error updating personality type:', error);
-    } else {
-      console.log('Personality type updated:', data);
+    // Example logic (replace with actual logic based on answers)
+    typeCode = "ISTJ"; // Example; replace with your own logic
+
+    // Determine the personality type based on the typeCode
+    const result = determineType(typeCode) || getRandomPersonality();
+    setPersonalityType(result);
+
+    // Save the result to the database
+    if (user) {
+      supabase
+        .from('profiles')
+        .update({ personality: result })
+        .eq('id', user.id)
+        .then(({ error }) => {
+          if (error) {
+            console.error('Error saving personality type:', error);
+          }
+        });
     }
-  };
-
-  const retakeQuiz = () => {
-    setQuizCompleted(false);
-    setAnswers({});
-    setPersonalityType('none');
-    setCurrentQuestionIndex(0);
   };
 
   const handleNext = () => {
@@ -202,51 +205,51 @@ export default function Account() {
     }
   };
 
+  const retakeQuiz = () => {
+    setQuizCompleted(false);
+    setAnswers({});
+    setCurrentQuestionIndex(0);
+    setPersonalityType('');
+
+    // Trigger a fetch to re-calculate and save personality type
+    if (user) {
+      calculatePersonalityType(); // Ensure this function is being called to save the new type
+    }
+  };
+
   const displayContent = () => {
     if (selectedTab === 'Personality') {
-      if (personalityType === 'none') {
+      if (!quizCompleted) {
         return (
-          <div className="relative">
-            {quizCompleted ? (
-              <div className="text-center">
-                <p className="text-lg font-semibold mb-4">Your personality type is: {personalityType}</p>
-                <button
-                  onClick={retakeQuiz}
-                  className="px-4 py-2 bg-yellow-600 text-white rounded-md"
-                >
-                  Retake Quiz
-                </button>
-              </div>
-            ) : (
-              <div className="relative">
-                <div className="p-4 bg-white rounded-lg shadow-md">
-                  <p className="text-lg font-semibold mb-2">{questions[currentQuestionIndex].text}</p>
-                  {questions[currentQuestionIndex].options.map((option) => (
-                    <label key={option} className="block mb-2">
-                      <input
-                        type="radio"
-                        name={`question-${questions[currentQuestionIndex].id}`}
-                        value={option}
-                        checked={answers[questions[currentQuestionIndex].id] === option}
-                        onChange={() => handleAnswerChange(questions[currentQuestionIndex].id, option)}
-                        className="mr-2"
-                      />
-                      {option}
-                    </label>
-                  ))}
-                </div>
+          <div className="flex flex-col items-center text-gray-200">
+            {!personalityType ? (
+              <div className="relative bg-gray-900 p-4 rounded-lg shadow-md">
+                <p className="text-lg font-semibold mb-2">{questions[currentQuestionIndex].text}</p>
+                {questions[currentQuestionIndex].options.map((option) => (
+                  <label key={option} className="block mb-2">
+                    <input
+                      type="radio"
+                      name={`question-${questions[currentQuestionIndex].id}`}
+                      value={option}
+                      checked={answers[questions[currentQuestionIndex].id] === option}
+                      onChange={() => handleAnswerChange(questions[currentQuestionIndex].id, option)}
+                      className="mr-2"
+                    />
+                    {option}
+                  </label>
+                ))}
                 <div className="flex justify-between mt-4">
                   <button
                     onClick={handlePrev}
                     disabled={currentQuestionIndex === 0}
-                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md"
+                    className="px-4 py-2 bg-gray-700 text-gray-300 rounded-md"
                   >
                     <ArrowLeftIcon className="h-5 w-5" />
                   </button>
                   <button
                     onClick={handleNext}
                     disabled={currentQuestionIndex === questions.length - 1}
-                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md"
+                    className="px-4 py-2 bg-gray-700 text-gray-300 rounded-md"
                   >
                     <ArrowRightIcon className="h-5 w-5" />
                   </button>
@@ -256,10 +259,21 @@ export default function Account() {
                     setQuizCompleted(true);
                     calculatePersonalityType();
                   }}
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
-                  disabled={!questions.every(question => answers[question.id])} // Disable button if any question is unanswered
+                  className="mt-4 px-4 py-2 bg-blue-800 text-white rounded-md"
+                  disabled={!questions.every(question => answers[question.id])}
                 >
                   Submit
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <p className="text-lg font-semibold mb-4">Your personality type is: {personalityType}</p>
+                <p className="mb-4">{descriptions[personalityType]}</p>
+                <button
+                  onClick={retakeQuiz}
+                  className="px-4 py-2 bg-green-700 text-white rounded-md"
+                >
+                  Retake Quiz
                 </button>
               </div>
             )}
@@ -267,11 +281,12 @@ export default function Account() {
         );
       } else {
         return (
-          <div className="text-center">
-            <p className="text-lg font-semibold mb-4">Your personality type is already set to {personalityType}.</p>
+          <div className="text-center text-gray-200">
+            <p className="text-lg font-semibold mb-4">Your personality type is set to {personalityType}.</p>
+            <p className="mb-4">{descriptions[personalityType]}</p>
             <button
               onClick={retakeQuiz}
-              className="px-4 py-2 bg-yellow-600 text-white rounded-md"
+              className="px-4 py-2 bg-green-700 text-white rounded-md"
             >
               Retake Quiz
             </button>
@@ -284,7 +299,7 @@ export default function Account() {
       case 'payment':
         return "Manage your payment information here.";
       default:
-        return user ? `Welcome to your account, ${user.user_metadata.full_name} (${user.email})` : "Welcome to your account"; // Use user's name and email in the welcome message
+        return user ? `Welcome to your account, ${user.user_metadata.full_name} (${user.email})` : "Welcome to your account";
     }
   };
 
@@ -293,36 +308,36 @@ export default function Account() {
       <Head>
         <title>Account - smart8ball</title>
       </Head>
-      <main className='w-full h-screen flex items-center justify-center bg-gray-800'>
-        <div className='w-full md:w-3/4 h-3/4 bg-white rounded-lg shadow-lg flex flex-col md:flex-row'>
-          <nav className='w-full md:w-1/4 bg-gray-200 rounded-l-lg p-4'>
+      <main className='w-full h-screen flex items-center justify-center bg-gray-900'>
+        <div className='w-full md:w-3/4 h-3/4 bg-gray-800 rounded-lg shadow-lg flex flex-col md:flex-row'>
+          <nav className='w-full md:w-1/4 bg-gray-700 rounded-l-lg p-4'>
             <ul className='space-y-4'>
-              <li className={`text-gray-700 font-medium w-full text-left ${selectedTab === 'Personality' ? 'bg-gray-300' : ''}`} onClick={() => updateTab('Personality')}>
-                Personality Quiz
+              <li className={`text-gray-300 font-medium w-full text-left cursor-pointer ${selectedTab === 'Personality' ? 'bg-gray-600' : ''}`} onClick={() => updateTab('Personality')}>
+                User Personality
               </li>
-              <li className={`text-gray-700 font-medium w-full text-left ${selectedTab === 'payment' ? 'bg-gray-300' : ''}`} onClick={() => updateTab('payment')}>
+              <li className={`text-gray-300 font-medium w-full text-left cursor-pointer ${selectedTab === 'payment' ? 'bg-gray-600' : ''}`} onClick={() => updateTab('payment')}>
                 Manage Payment
               </li>
-              <li className={`text-gray-700 font-medium w-full text-left`}>
-                <button onClick={confirmLogout} className="text-red-600">
+              <li className={`text-gray-300 font-medium w-full text-left cursor-pointer`}>
+                <button onClick={confirmLogout} className="text-red-400">
                   Logout
                 </button>
               </li>
             </ul>
           </nav>
           <div className='w-full md:w-3/4 p-4 md:p-8'>
-            <h1 className='text-xl md:text-2xl font-bold text-gray-800'>{displayContent()}</h1>
+            <h1 className='text-xl md:text-2xl font-bold text-gray-200'>{displayContent()}</h1>
           </div>
         </div>
         {showLogoutConfirm && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-            <div className='bg-white p-6 rounded-lg shadow-lg'>
-              <p>Are you sure you want to log out?</p>
+          <div className='fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center'>
+            <div className='bg-gray-800 p-6 rounded-lg shadow-lg'>
+              <p className="text-gray-200">Are you sure you want to log out?</p>
               <div className='mt-4 flex justify-end space-x-4'>
-                <button onClick={cancelLogout} className='px-4 py-2 bg-gray-300 rounded-md'>
+                <button onClick={cancelLogout} className='px-4 py-2 bg-gray-600 text-gray-200 rounded-md'>
                   Cancel
                 </button>
-                <button onClick={handleLogout} className='px-4 py-2 bg-red-600 text-white rounded-md'>
+                <button onClick={handleLogout} className='px-4 py-2 bg-red-700 text-white rounded-md'>
                   Logout
                 </button>
               </div>
@@ -330,7 +345,7 @@ export default function Account() {
           </div>
         )}
         {showPopup && (
-          <div className='fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded'>
+          <div className='fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-700 text-white px-4 py-2 rounded'>
             Error logging out. Please try again.
           </div>
         )}
