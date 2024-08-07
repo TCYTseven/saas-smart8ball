@@ -1,38 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Smart8Ball
+
+Smart8Ball is your AI-powered decision-making companion. Unlike the randomness of a magic 8 ball or coin flips, Smart8Ball uses advanced AI to provide thoughtful, context-aware advice. With unique personalities and personalized insights, it helps you navigate tough decisions with confidence.
+
+## Features
+
+- **Personality Selection**: Choose from a range of personalities to get advice tailored to different styles, including Rocky Balboa, Uncle Iroh, Cupid, Jordan Belfort, and David Goggins.
+- **Personality Quiz**: Take a Myers-Briggs personality quiz to receive decisions optimized for your unique personality traits.
+- **Contextual Analysis**: Upload PDFs or PNGs to provide additional context for the AI to analyze, enhancing the relevance of the advice.
+
+## Tech Stack
+
+- **Frontend**: Next.js, TailwindCSS, Supabase O-Auth
+- **Backend**: Python FastAPI, Supabase Database
 
 ## Getting Started
 
-First, run the development server:
+To run the frontend, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. **Clone the repository**:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    ```bash
+    git clone https://github.com/your-username/smart8ball.git
+    cd smart8ball/frontend
+    ```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+2. **Install dependencies**:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+    ```bash
+    npm install
+    ```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+3. **Run the development server**:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    ```bash
+    npm run dev
+    ```
 
-## Learn More
+4. **Open your browser** and go to [http://localhost:3000](http://localhost:3000)
 
-To learn more about Next.js, take a look at the following resources:
+To run the backend, follow these steps:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository**:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```bash
+    git clone https://github.com/your-username/smart8ball.git
+    cd smart8ball/backend
+    ```
+2. **Install Requirements**:
 
-## Deploy on Vercel
+    ```bash
+    pip install -r requirements.txt 
+    ```
+    
+3. **Run the development server**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    uvicorn app:app --host 0.0.0.0 --port 5001 --reload  
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
