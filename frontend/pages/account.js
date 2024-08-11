@@ -74,7 +74,20 @@ export default function Account() {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [personalityType, setPersonalityType] = useState('');
   const [user, setUser] = useState(null);
-
+  
+  useEffect(() => {
+    const checkUserAndFetch = async () => {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        router.push('/register');
+      } else {
+        setUser(user);
+        fetchPersonalityType(user.id);
+      }
+    };
+    checkUserAndFetch();
+  }, [router]);
+  
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
@@ -192,6 +205,7 @@ export default function Account() {
         });
     }
   };
+
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {

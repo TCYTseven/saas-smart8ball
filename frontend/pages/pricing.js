@@ -10,7 +10,6 @@ const PricingPage = () => {
         <title>pricing - smart8ball</title>
       </Head>
       <div>
-        <h1>Pricing Page</h1>
         <Pricing />
       </div>
     </>
