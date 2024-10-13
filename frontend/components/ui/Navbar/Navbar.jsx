@@ -39,15 +39,16 @@ const Navbar = () => {
             <div className="custom-screen md:hidden">
                 <NavHeader menuBtnEl={menuBtnEl} state={state} onClick={() => setState(!state)} />
             </div>
-            <nav className={`pb-3 md:text-base md:static md:block ${state ? "absolute z-20 top-0 inset-x-0 rounded-b-2xl" : "hidden"}`} style={{ backdropFilter: 'blur(10px)', borderRadius: '20px' }}>
-                <div className="custom-screen items-center md:flex">
+            <nav className={`pb-4 pt-4 md:text-lg md:static md:block ${state ? "absolute z-20 top-0 inset-x-0" : "hidden"}`}
+                style={{ backdropFilter: 'blur(15px)', borderRadius: '30px', backgroundColor: 'rgba(17, 24, 39, 0.9)' }}>
+                <div className="custom-screen items-center md:flex rounded-xl shadow-lg">
                     <NavHeader state={state} onClick={() => setState(!state)} />
-                    <div className={`flex-1 items-center mt-8 text-gray-300 md:font-medium md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
-                        <ul className="flex-1 justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+                    <div className={`flex-1 items-center mt-8 text-gray-300 md:font-medium md:mt-0 md:flex ${state ? 'block' : 'hidden'}`}>
+                        <ul className="flex-1 justify-center items-center space-y-6 md:flex md:space-x-10 md:space-y-0">
                             {
                                 navigation.map((item, idx) => {
                                     return (
-                                        <li key={idx} className="hover:text-gray-50 text-lg">
+                                        <li key={idx} className="hover:text-gray-50 text-xl">
                                             <Link href={item.href} className="block text-center">
                                                 {item.name}
                                             </Link>
@@ -58,7 +59,7 @@ const Navbar = () => {
                         </ul>
                         <div className="gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                             {isLoggedIn ? (
-                                <NavLink href="/account" className="flex items-center justify-center gap-x-1 text-lg text-white font-medium custom-btn-bg border border-gray-500 active:bg-gray-900 md:inline-flex">
+                                <NavLink href="/account" className="flex items-center justify-center gap-x-1 text-xl text-white font-medium bg-indigo-600 hover:bg-indigo-500 border border-transparent rounded-full py-3 px-6">
                                     My Account
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6">
                                         <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
@@ -66,10 +67,10 @@ const Navbar = () => {
                                 </NavLink>
                             ) : (
                                 <>
-                                    <Link href="/login" className="block hover:text-gray-50 text-lg">
+                                    <Link href="/login" className="block hover:text-gray-50 text-xl">
                                         Sign in
                                     </Link>
-                                    <NavLink href="/pricing" className="flex items-center justify-center gap-x-1 text-lg text-white font-medium custom-btn-bg border border-gray-500 active:bg-gray-900 md:inline-flex">
+                                    <NavLink href="/pricing" className="flex items-center justify-center gap-x-1 text-xl text-white font-medium bg-indigo-600 hover:bg-indigo-500 border border-transparent rounded-full py-3 px-6">
                                         Start now
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6">
                                             <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
