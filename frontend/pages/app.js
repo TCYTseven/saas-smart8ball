@@ -9,8 +9,11 @@ const AppPage = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [showAccountPopup, setShowAccountPopup] = useState(false);
     const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
-    const [selectedPersona, setSelectedPersona] = useState('ITMP'); // Default personality
-    const [personaFromSupabase, setPersonaFromSupabase] = useState('');
+    const [selectedPersona, setSelectedPersona] = useState('Uncle Iroh'); // Default persona
+    const [personaFromSupabase, setPersonaFromSupabase] = useState('ITMP');
+    const [userQuestion, setUserQuestion] = useState('');  // To store the user's input question
+    const [responseAnswer, setResponseAnswer] = useState('');  // To store API response
+    const [isLoading, setIsLoading] = useState(false);  // For showing a loading indicator
 
     const handleFileUpload = (event) => {
         if (event.target.files.length > 0) {
@@ -18,7 +21,7 @@ const AppPage = () => {
             setShowPopup(true);
             setTimeout(() => {
                 setShowPopup(false);
-            }, 3000); 
+            }, 3000);
         }
     };
 
@@ -51,16 +54,28 @@ const AppPage = () => {
         fetchPersona();
     }, []);
 
-    const handleGetAnswer = () => {
-        setShowAccountPopup(true); 
-    };
+    const handleGetAnswer = async () => {
+        // Show a loading indicator while the API is being called
+        setIsLoading(true);
+        
+        try {
+            console.log('User question:', userQuestion);
+            console.log('Selected persona:', selectedPersona);
+            const response = await fetch(`http://localhost:5001/test/${encodeURIComponent(userQuestion)}/${encodeURIComponent(selectedPersona)}/${encodeURIComponent(personaFromSupabase)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
 
-    const handleClosePopup = () => {
-        setShowAccountPopup(false); 
-    };
-
-    const toggleAdvancedSettings = () => {
-        setShowAdvancedSettings(prev => !prev);
+            const data = await response.json();
+            setResponseAnswer(data.answer); // Set the response answer
+        } catch (error) {
+            console.error('Error fetching answer:', error);
+            setResponseAnswer('Something went wrong. Please try again later.');
+        } finally {
+            setIsLoading(false); // Hide the loading indicator
+        }
     };
 
     const handlePersonaChange = (event) => {
@@ -87,6 +102,8 @@ const AppPage = () => {
                         <textarea
                             className="w-full h-96 p-6 border border-gray-700 bg-gray-800 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                             placeholder="Ask anything..."
+                            value={userQuestion}
+                            onChange={(e) => setUserQuestion(e.target.value)}  // Capture user input
                         />
                         <div className="absolute bottom-6 left-6 flex space-x-4">
                             {/* Increased button padding and text size */}
@@ -100,7 +117,7 @@ const AppPage = () => {
                             </label>
                             <button
                                 className="bg-gray-700 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-pointer text-base"
-                                onClick={toggleAdvancedSettings}
+                                onClick={() => setShowAdvancedSettings(prev => !prev)}
                             >
                                 Advanced Settings
                             </button>
@@ -110,7 +127,7 @@ const AppPage = () => {
                                 {/* Increased close button size */}
                                 <button
                                     className="text-gray-400 hover:text-gray-300 absolute top-6 right-6 text-2xl"
-                                    onClick={toggleAdvancedSettings}
+                                    onClick={() => setShowAdvancedSettings(false)}
                                 >
                                     &times;
                                 </button>
@@ -121,24 +138,12 @@ const AppPage = () => {
                                     value={selectedPersona}
                                     onChange={handlePersonaChange}
                                 >
-                                    <option value="">-- Select Persona --</option>
                                     <option value="Uncle Iroh">Uncle Iroh</option>
                                     <option value="Rocky Balboa">Rocky Balboa</option>
                                     <option value="Cupid">Cupid</option>
                                     <option value="David Goggins">David Goggins</option>
                                     <option value="Jordan Belfort">Jordan Belfort</option>
                                 </select>
-                                <div className="mt-6">
-                                    <button className="text-gray-300 font-bold text-lg">
-                                        Responding to: {personaFromSupabase}
-                                    </button>
-                                    <div className="mt-4 text-lg flex items-center space-x-3">
-                                        <FaInfoCircle className="text-gray-400" />
-                                        <a href="/account" className="text-blue-400 hover:underline">
-                                            Activate Personalization
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
                         )}
                     </div>
@@ -148,9 +153,15 @@ const AppPage = () => {
                             className="focus:outline-none bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg transform hover:scale-110 transition-transform duration-300 text-lg"
                             onClick={handleGetAnswer}
                         >
-                            Get Answer
+                            {isLoading ? 'Fetching...' : 'Get Answer'}
                         </button>
                     </div>
+                    {responseAnswer && (
+                        <div className="mt-6 p-6 bg-gray-800 text-white rounded-lg shadow-lg">
+                            <h3 className="text-xl font-bold mb-4">Answer:</h3>
+                            <p>{responseAnswer}</p>
+                        </div>
+                    )}
                 </div>
             </div>
             {showPopup && (
@@ -169,27 +180,18 @@ const AppPage = () => {
                         <div className="mt-10 flex justify-center space-x-8">
                             {/* Increased button sizes and text */}
                             <button
-                                className="relative py-4 px-8 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 hover:from-purple-700 hover:to-blue-700 text-lg"
-                                onClick={() => window.location.href = '/login'}
+                                className="relative py-4 px-8 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-lg font-bold text-white shadow-lg hover:scale-110 transition-transform"
+                                onClick={() => setShowAccountPopup(false)}
                             >
-                                Log In
-                                <div className="absolute inset-0 border-2 border-transparent rounded-lg group-hover:border-white transition-all duration-300"></div>
+                                Sign Up
                             </button>
                             <button
-                                className="relative py-4 px-8 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 hover:from-purple-700 hover:to-blue-700 text-lg"
-                                onClick={() => window.location.href = '/register'}
+                                className="relative py-4 px-8 rounded-lg bg-gray-700 text-lg font-bold text-white shadow-lg hover:scale-110 transition-transform"
+                                onClick={() => setShowAccountPopup(false)}
                             >
-                                Register
-                                <div className="absolute inset-0 border-2 border-transparent rounded-lg group-hover:border-white transition-all duration-300"></div>
+                                Sign In
                             </button>
                         </div>
-                        {/* Increased Close button size and spacing */}
-                        <button
-                            className="mt-10 py-4 px-8 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 hover:from-red-600 hover:to-red-700 text-lg"
-                            onClick={handleClosePopup}
-                        >
-                            Close
-                        </button>
                     </div>
                 </div>
             )}

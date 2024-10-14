@@ -8,6 +8,7 @@ import Testimonial from "@/components/ui/Testimonial";
 import VisualFeatures from "@/components/ui/VisualFeatures";
 
 export default function Home() {
+  
   return (
     <>
     <Head>

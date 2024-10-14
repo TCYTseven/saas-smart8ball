@@ -29,8 +29,20 @@ app = FastAPI(
     swagger_ui_parameters={"docExpansion": "none", "defaultModelsExpandDepth": -1}
 )
 origins = [
-    "http://localhost:5001",
+    "http://localhost:3001",  # Allow your frontend origin
+    # You can add other origins here if necessary
 ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
+
+
+
 
 app.add_middleware(
     CORSMiddleware,
